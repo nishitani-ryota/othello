@@ -194,8 +194,7 @@ while run:
                 fullscreen = True
                 run = False
             if event.key == pygame.K_ESCAPE:
-                run =False
-                fullscreen = False
+                pygame.quit()
         #マウスクリック
         if fullscreen == False:
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -320,8 +319,9 @@ while fullscreen:
     full_list = full_potitions()
     #イベントの取得     
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                fullscreen = False
         #マウスクリック
         if event.type == pygame.MOUSEBUTTONDOWN:
             if game_over == False:
