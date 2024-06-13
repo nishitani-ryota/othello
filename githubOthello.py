@@ -310,35 +310,13 @@ def full_pieces(col,row):
                     board[flip_y][flip_x] = player
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    #メイン#############################################################################################################################################################################
+#フルスクリーン時メイン#############################################################################################################################################################################
 
 while fullscreen:
     #背景の塗りつぶし
     full.fill(GREEN)
     #石を置ける場所の取得
     full_list = full_potitions()
-    
-    #石を置ける場所がない場合、パス
-    if len(full_list) < 1:
-        player *= -1
-        pass_num += 1
-    #ゲームオーバー判定
-    if pass_num > 1:
-        pass_num = 2
-        game_over = True
-    #勝敗チェック
-    black_num = 0
-    white_num = 0
-    if game_over:
-        black_num = sum(row.count(1) for row in board)
-        white_num = sum(row.count(-1) for row in board)
-        if black_num > white_num:
-            screen.blit(black_win_surface,(230,200))
-        elif black_num < white_num:
-            screen.blit(white_win_surface,(230,200))
-        else:
-            screen.blit(draw_surface,(230,200))
-            screen.blit(reset_surface, (180,400))
     #イベントの取得     
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -421,6 +399,27 @@ while fullscreen:
     #石を置ける場所を黄色の円で表示
     for x,y in full_list:
         pygame.draw.circle(full,YELLOW,(x * square_size + 50, y * square_size + 100),45,3)
+    #石を置ける場所がない場合、パス
+    if len(full_list) < 1:
+        player *= -1
+        pass_num += 1
+    #ゲームオーバー判定
+    if pass_num > 1:
+        pass_num = 2
+        game_over = True
+    #勝敗チェック
+    black_num = 0
+    white_num = 0
+    if game_over:
+        black_num = sum(row.count(1) for row in board)
+        white_num = sum(row.count(-1) for row in board)
+        if black_num > white_num:
+            screen.blit(black_win_surface,(630,315))
+        elif black_num < white_num:
+            screen.blit(white_win_surface,(630,315))
+        else:
+            screen.blit(draw_surface,(630,315))
+        screen.blit(reset_surface, (575,500))
     #更新
     pygame.display.update()
     clock.tick(FPS)
