@@ -182,7 +182,7 @@ while run:
     #イベントの取得     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            run = False
+            pygame.quit()
         if event.type == pygame.KEYDOWN:
             #ウインドウモード
             if event.key == pygame.K_c:
@@ -194,8 +194,7 @@ while run:
                 fullscreen = True
                 run = False
             if event.key == pygame.K_ESCAPE:
-                run =False
-                fullscreen = False
+                pygame.quit()
         #マウスクリック
         if fullscreen == False:
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -254,8 +253,8 @@ board = [
     [2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2],
     [2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2],
     [2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2],
-    [2,2,2,2,0,0,0,1,-1,0,0,0,2,2,2,2],
     [2,2,2,2,0,0,0,-1,1,0,0,0,2,2,2,2],
+    [2,2,2,2,0,0,0,1,-1,0,0,0,2,2,2,2],
     [2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2],
     [2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2],
     [2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2]]
@@ -320,8 +319,9 @@ while fullscreen:
     full_list = full_potitions()
     #イベントの取得     
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
         #マウスクリック
         if event.type == pygame.MOUSEBUTTONDOWN:
             if game_over == False:
@@ -374,10 +374,10 @@ while fullscreen:
                 pygame.draw.circle(full,WHITE,(col_index * square_size + 50, row_index * square_size + 100),45)
     for i in range(square_num+1):
         for line in range(4):
-            pygame.draw.line(full,GREEN,(0,line*square_size),(800,line*square_size),3)
+            pygame.draw.line(full,GREEN,(0,line*square_size),(398,line*square_size),3)
             pygame.draw.line(full,GREEN,(line*square_size,0),(line*square_size,800),3)
         for line in range(4,9):
-            pygame.draw.line(full,GREEN,(0,line*square_size),(800,line*square_size),3)
+            pygame.draw.line(full,GREEN,(0,line*square_size),(398,line*square_size),3)
             pygame.draw.line(full,GREEN,(line*square_size,0),(line*square_size,50),3)
             pygame.draw.line(full,BLACK,(400,i*square_size+50),(1200,i*square_size+50),3)
             pygame.draw.line(full,BLACK,((i+4)*square_size,50),((i+4)*square_size,850),3)
