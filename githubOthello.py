@@ -317,6 +317,28 @@ while fullscreen:
     full.fill(GREEN)
     #石を置ける場所の取得
     full_list = full_potitions()
+    
+    #石を置ける場所がない場合、パス
+    if len(full_list) < 1:
+        player *= -1
+        pass_num += 1
+    #ゲームオーバー判定
+    if pass_num > 1:
+        pass_num = 2
+        game_over = True
+    #勝敗チェック
+    black_num = 0
+    white_num = 0
+    if game_over:
+        black_num = sum(row.count(1) for row in board)
+        white_num = sum(row.count(-1) for row in board)
+        if black_num > white_num:
+            screen.blit(black_win_surface,(230,200))
+        elif black_num < white_num:
+            screen.blit(white_win_surface,(230,200))
+        else:
+            screen.blit(draw_surface,(230,200))
+            screen.blit(reset_surface, (180,400))
     #イベントの取得     
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -365,6 +387,19 @@ while fullscreen:
                     board[y][x] = player
                     player *= -1
                     pass_num = 0
+            else:
+                    board = [
+    [2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2],
+    [2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2],
+    [2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2],
+    [2,2,2,2,0,0,0,-1,1,0,0,0,2,2,2,2],
+    [2,2,2,2,0,0,0,1,-1,0,0,0,2,2,2,2],
+    [2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2],
+    [2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2],
+    [2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2]]
+                    player = 1
+                    game_over = False
+                    pass_num = 0    
     #colが1だったら黒石を置いて-1だったら白石を置く設定
     for row_index,row in enumerate(board):
         for col_index,col in enumerate(row):
