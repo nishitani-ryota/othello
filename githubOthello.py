@@ -391,7 +391,7 @@ while fullscreen:
             pygame.draw.line(full,GREEN,(line*square_size,0),(line*square_size,800),3)
         for line in range(4,9):
             pygame.draw.line(full,GREEN,(0,line*square_size),(398,line*square_size),3)
-            pygame.draw.line(full,GREEN,(line*square_size,0),(line*square_size,50),3)
+            pygame.draw.line(full,GREEN,(line*square_size,0),(line*square_size,48),3)
             pygame.draw.line(full,BLACK,(400,i*square_size+50),(1200,i*square_size+50),3)
             pygame.draw.line(full,BLACK,((i+4)*square_size,50),((i+4)*square_size,850),3)
             #石を置ける場所の取得
@@ -424,4 +424,3 @@ while fullscreen:
     pygame.display.update()
     clock.tick(FPS)
 pygame.quit()
-#f
