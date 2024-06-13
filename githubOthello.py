@@ -321,6 +321,7 @@ while fullscreen:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
+                pygame.display.set_mode((800,800))
                 pygame.quit()
         #マウスクリック
         if event.type == pygame.MOUSEBUTTONDOWN:
