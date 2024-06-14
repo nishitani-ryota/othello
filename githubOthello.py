@@ -109,6 +109,7 @@ white_win_surface = font.render("White Win!", False, WHITE, RED)
 draw_surface = font.render("Draw...", False, BLUE, RED)
 reset_surface = font.render("Click to reset!", False, BLACK, RED)
 startt = font.render("start", False, BLACK, GREEN)
+exitt = font.render("exit", False, BLACK, RED)
 #マウスクリックでstart-----------------------------------------------------------------------------------------------------------------------------
 start = True
 while start:
@@ -120,16 +121,6 @@ while start:
         if starts.type == pygame.QUIT:
             pygame.quit()
         if starts.type == pygame.KEYDOWN:
-            #フルスクリーン切り替え
-            if starts.key == pygame.K_c:               
-                full = pygame.display.toggle_fullscreen()
-            #     pygame.display.set_mode((800, 800))
-            # #フルスクリーン
-            # if starts.key == pygame.K_f:
-            #     pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
-
-                #フルスクリーン時の画面変更
-
             #ESCAPE押したら画面閉じる
             if starts.key == pygame.K_ESCAPE:
                 pygame.quit()
@@ -317,6 +308,11 @@ while fullscreen:
     full.fill(GREEN)
     #石を置ける場所の取得
     full_list = full_potitions()
+    #クリックする範囲
+    rect = pygame.Rect(1400, 0, 127, 68)
+    screen.fill((255,255,255), rect)
+    #startを表示させる範囲
+    screen.blit(exitt,(1400,0))
     #イベントの取得     
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -327,6 +323,9 @@ while fullscreen:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if game_over == False:
                 mx,my = pygame.mouse.get_pos()
+                #クリックした箇所がrectの範囲内であればif文実行
+                if rect.collidepoint(mx, my):
+                    pygame.quit()
                 x = mx // 100
                 if 50 <= my < 100: #0
                     y = my // 100 
