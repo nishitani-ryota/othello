@@ -100,7 +100,7 @@ while running:
                             if xx < 0 :
                                 list = []
                                 change = False
-                            #上のif文でfalseにならなくて、下のif文で置いた石と２個左の駒が違う色ならupdated_aのx座標を-100してああand x-100 > 0
+                            #上のif文でfalseにならなくて、下のif文で置いた石と２個左の駒が違う色ならupdated_aのx座標を-100してあand x-100 > 0
                             while change:
                                 if screen.get_at(updated_a) != screen.get_at((x, y)) :
                                     updated_a =  (updated_a[0] - 100, updated_a[1])
