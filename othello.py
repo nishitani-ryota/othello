@@ -62,18 +62,22 @@ def yellow(num,yellow_a,yellow_b):
                         else:
                             serch = False
 
-def reverse_serch(serch_1,serch_2,serch_3):
+def reverse_serch(serch_1,serch_2):
     serch = True
     current_x = x
     current_y = y
+    reverse = []
     while serch:
-        if current_x + 2*c[0] > 0 and current_y + 2*c[1] > 0 and current_x + 2*c[0] < 850 and current_y + 2*c[1] < 850 and current_x + c[0] > 0 and current_y + c[1] > 0 and current_x + c[0] < 850 and current_y + c[1] < 850 and screen.get_at((current_x + c[0], current_y + c[1])) ==serch_1 and screen.get_at((current_x + c[0]+c[0], current_y + c[1]+c[1])) == serch_2:
+        if current_x + c[0] > 0 and current_y + c[1] > 0 and current_x + c[0] < 850 and current_y + c[1] < 850 and current_x + c[0] > 0 and current_y + c[1] > 0 and current_x + c[0] < 850 and current_y + c[1] < 850 and screen.get_at((current_x + c[0], current_y + c[1])) ==serch_1 :
             reverse.append((current_x + c[0], current_y + c[1]))
-            serch = False
-            
-        elif current_x + c[0] > 0 and current_y + c[1] > 0 and current_x + c[0] < 850 and current_y + c[1] < 850 and screen.get_at((current_x + c[0], current_y + c[1])) == serch_3:
             current_x += c[0]
             current_y += c[1]
+            if current_x + c[0] > 0 and current_y + c[1] > 0 and current_x + c[0] < 850 and current_y + c[1] < 850 and current_x + c[0] > 0 and current_y + c[1] > 0 and current_x + c[0] < 850 and current_y + c[1] < 850 and screen.get_at((current_x + c[0], current_y + c[1])) ==serch_2 :
+                true_reverse.extend(reverse)
+                serch = False 
+            elif current_x + c[0] > 0 and current_y + c[1] > 0 and current_x + c[0] < 850 and current_y + c[1] < 850 and current_x + c[0] > 0 and current_y + c[1] > 0 and current_x + c[0] < 850 and current_y + c[1] < 850 and board_dict[(current_x + c[0], current_y + c[1])] == 0: 
+                reverse = []
+                serch = False
         else:
             serch = False                                        
 pygame.init()
@@ -97,6 +101,8 @@ pygame.display.flip()
 player =1
 running = True
 tateyokonaname = [(0,100),(0,-100),(100,0),(-100,0),(100,100),(100,-100),(-100,-100),(-100,100)]
+font = pygame.font.Font(None, 36)
+
 while running:
     for event in pygame.event.get():  
         if event.type == pygame.QUIT:
@@ -107,6 +113,8 @@ while running:
             if player ==1:
                 list = []
                 serchlist = []
+                end_white = []
+                end_black = []
                 yellow(1,(0, 0, 0),(255, 255, 255))
                 
                 for d in list:
@@ -119,23 +127,54 @@ while running:
                     player -= 1 
                     pygame.draw.circle(screen,(255,255,255),(x,y),50)
                     board_dict[(x, y)] = 1
-                    reverse = []
+                    true_reverse = []
                     
                     for c in tateyokonaname:
-                        reverse_serch((0, 0, 0),(255, 255, 255),(255, 255, 255))
+                        reverse_serch((0, 0, 0),(255, 255, 255))
                         
-                    for b in reverse:
+                    for b in true_reverse:
                         pygame.draw.circle(screen, (255, 255, 255), (b), 50)
                         board_dict[(b)] = 1
 
                     for d in list:
                         if board_dict[(d)] == 0:
                             pygame.draw.circle(screen, (0,100,0), (d), 50)
-
                     
+                    for a in board:
+                            skip = False
+                            for b in board:
+                                if board_dict[(a,b)] == 0:
+                                    skip = True
+                                elif a==750 and b == 750 and board_dict[(750,750)] != 0:
+                                    for a in board:
+                                        for b in board:
+                                            if board_dict[(a,b)] == 1:
+                                                end_white.append((a,b))
+                                            elif board_dict[(a,b)] == 2:
+                                                end_black.append((a,b))
+                                        
+                                    screen.fill((0, 0, 0))  # 背景を黒に塗りつぶす
+                                    if len(end_white) > len(end_black):
+                                        text = font.render("white win", True, (255, 255, 255))
+                                        text_rect = text.get_rect(center=(400, 400))
+                                        screen.blit(text, text_rect)
+                                    elif len(end_white) < len(end_black):
+                                        text = font.render("black win", True, (255, 255, 255))
+                                        text_rect = text.get_rect(center=(400, 400))
+                                        screen.blit(text, text_rect)
+                                    else:
+                                        text = font.render("draw", True, (255, 255, 255))
+                                        text_rect = text.get_rect(center=(400, 400))
+                                        screen.blit(text, text_rect)
+                                    pygame.display.flip()  # 画面更新
+                            if skip:
+                                break
+
             elif player == 0 :
                     list = []
                     serchlist = []
+                    end_white = []
+                    end_black = []
                     yellow(2,(255, 255, 255),(0, 0, 0))
                     
                     for d in list:
@@ -148,18 +187,47 @@ while running:
                         player += 1
                         pygame.draw.circle(screen,(0,0,0),(x,y),50)
                         board_dict[(x, y)] = 2
-                        reverse = []
+                        true_reverse = []
                         
                         for c in tateyokonaname:
-                            reverse_serch((255, 255, 255),(0, 0, 0),(0, 0, 0))
+                            reverse_serch((255, 255, 255),(0, 0, 0))
                             
-                        for b in reverse:
+                        for b in true_reverse:
                             pygame.draw.circle(screen, (0,0,0), (b), 50)
                             board_dict[(b)] = 2
                         for d in list:
                             if board_dict[(d)] == 0:
                                 pygame.draw.circle(screen, (0,100,0), (d), 50)
-                            
+                                
+                        for a in board:
+                            skip = False
+                            for b in board:
+                                if board_dict[(a,b)] == 0:
+                                    skip = True
+                                elif a==750 and b == 750 and board_dict[(750,750)] != 0:
+                                    for a in board:
+                                        for b in board:
+                                            if board_dict[(a,b)] == 1:
+                                                end_white.append((a,b))
+                                            elif board_dict[(a,b)] == 2:
+                                                end_black.append((a,b))
+                                        
+                                    screen.fill((0, 0, 0))  # 背景を黒に塗りつぶす
+                                    if len(end_white) > len(end_black):
+                                        text = font.render("white win", True, (255, 255, 255))
+                                        text_rect = text.get_rect(center=(400, 400))
+                                        screen.blit(text, text_rect)
+                                    elif len(end_white) < len(end_black):
+                                        text = font.render("black win", True, (255, 255, 255))
+                                        text_rect = text.get_rect(center=(400, 400))
+                                        screen.blit(text, text_rect)
+                                    else:
+                                        text = font.render("draw", True, (255, 255, 255))
+                                        text_rect = text.get_rect(center=(400, 400))
+                                        screen.blit(text, text_rect)
+                                    pygame.display.flip()  # 画面更新
+                            if skip:
+                                break
             draw = False                   
         pygame.display.flip()
 
